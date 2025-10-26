@@ -1,0 +1,118 @@
+.comment-item {
+  background: var(--dark2);
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition: 0.2s;
+
+  &:not(:last-child) {
+    margin-bottom: 12px;
+  }
+
+  &.liked {
+    border-left: 4px solid #4caf50;
+  }
+
+  &.disliked {
+    border-left: 4px solid #f44336;
+  }
+
+  &.good {
+    background-color: #305030;
+  }
+
+  &.bad {
+    background-color: #643333;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    color: var(--light-1);
+
+    margin-bottom: 0.4rem;
+  }
+
+  &__content {
+    font-size: 1rem;
+    white-space: pre-wrap;
+    word-break: break-word;
+    margin-bottom: 0.6rem;
+    color: var(--light-1);
+  }
+
+  &.level-1 {
+    margin-left: 2rem;
+    background: var(--dark3);
+
+    .comment-item__replies .comment-item {
+      margin-left: 0;
+    }
+  }
+
+  &.level-2 {
+    margin-left: 4rem;
+    background: var(--dark4);
+  }
+
+  &__replies {
+    margin-top: 1rem;
+    border-left: 2px solid var(--light-2);
+    padding-left: 1rem;
+    border-radius: 12px;
+
+    & .comment-item {
+      background: var(--dark-1);
+    }
+  }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      padding: 2px 6px;
+      transition: 0.2s;
+
+      &:hover {
+        transform: scale(1.1);
+      }
+
+      &.active {
+        color: #4caf50;
+      }
+
+      .comment-item__reply {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 0.9rem;
+        padding: 2px 8px;
+        color: var(--light-2);
+        transition: 0.2s;
+
+        &:hover {
+          color: var(--light-1);
+          background: var(--dark4);
+          border-radius: 4px;
+        }
+      }
+    }
+
+    .comment-item__delete {
+      color: #e74c3c;
+    }
+
+    .comment-item__rating {
+      color: var(--light-1);
+
+      font-size: 16px;
+    }
+  }
+}

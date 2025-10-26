@@ -1,0 +1,448 @@
+.post-item {
+  background: var(--dark2);
+  border-radius: 20px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  &.liked {
+    border-left: 4px solid #4caf50;
+  }
+
+  &.disliked {
+    border-left: 4px solid #f44336;
+  }
+
+  &.good .rating {
+    color: #4caf50;
+    border-color: #4caf50;
+  }
+
+  &.bad .rating {
+    color: #f44336;
+    border-color: #f44336;
+  }
+  // &.good {
+  //   border-left: 4px solid #4caf50;
+  // }
+
+  // &.bad {
+  //   border-left: 4px solid #f44336;
+  // }
+
+  // &.liked {
+  //   background-color: #305030;
+  // }
+
+  // &.disliked {
+  //   background-color: #643333;
+  // }
+
+  &.full {
+    width: 100%;
+    position: relative;
+    & h1 {
+      font-size: 24px;
+    }
+    & h2 {
+      font-size: 20px;
+    }
+    & h3 {
+      font-size: 18px;
+    }
+
+    & h1,
+    h2,
+    h3 {
+      font-weight: bold;
+    }
+
+    & .post-item__title {
+      font-size: 32px;
+    }
+  }
+
+  &__edit-btn {
+    position: absolute;
+    right: 12px;
+    top: 12px;
+  }
+
+  &__top {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+
+    & li {
+      border: 1px solid var(--gray-1);
+      padding: 4px;
+      border-radius: 2px;
+      font-family: var(--font-family);
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 150%;
+      color: var(--gray-2);
+
+      &.good {
+        border-color: var(--blue-1);
+        font-weight: bold;
+        color: var(--blue-1);
+      }
+
+      &.bad {
+        border-color: var(--red-1);
+      }
+    }
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  &__title {
+    font-family: var(--font-family);
+    font-weight: 700;
+    font-size: 24px;
+    color: var(--light-1);
+  }
+
+  &__content {
+    font-family: var(--font-family);
+    font-weight: 400;
+    font-size: 16px;
+    color: var(--light-1);
+    & img {
+      // display: block;
+      max-width: 100%;
+      margin: 8px 0;
+    }
+
+    & blockquote {
+      border-left: 4px solid var(--light-1);
+      padding-left: 16px;
+    }
+
+    & .ql-code-block-container {
+      background: var(--dark-1);
+      padding: 10px;
+    }
+
+    & > div {
+      & a {
+        color: var(--blue-1);
+      }
+      & > * {
+        margin-top: 4px;
+      }
+
+      & ol {
+        list-style: none;
+      }
+
+      & li[data-list="ordered"] {
+        counter-increment: list-0;
+        & .ql-ui:before {
+          content: counter(list-0, decimal) ". ";
+          margin-right: 4px;
+        }
+      }
+
+      & li[data-list="bullet"] {
+        counter-increment: list-0;
+        .ql-ui:before {
+          content: "\2022";
+          margin-right: 4px;
+        }
+      }
+    }
+  }
+
+  & .rating-btn {
+    padding: 4px;
+    border-radius: 8px;
+
+    &.active {
+      background: var(--red-1);
+    }
+  }
+
+  &__meta {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+    &-ava {
+      border-radius: 4px;
+      width: 32px;
+      height: 32px;
+      background: var(--blue-1);
+    }
+
+    &-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+  }
+
+  &__author {
+    font-family: var(--font-family);
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--light-1);
+  }
+
+  &__date {
+    font-family: var(--font-family);
+    font-weight: 400;
+    font-size: 14px;
+    color: var(--light-1);
+  }
+
+  &__tags {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  &__tag {
+    font-family: var(--font-family);
+    font-weight: 400;
+    font-size: 12px;
+    color: var(--light-1);
+    background: var(--dark2);
+
+    border: 1px solid var(--dark-1);
+    border-radius: 2px;
+    padding: 4px;
+
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background: var(--dark-1);
+    }
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 12px;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      padding: 2px 6px;
+      transition: 0.2s;
+
+      &:hover {
+        transform: scale(1.1);
+      }
+
+      &.active {
+        color: #4caf50;
+      }
+
+      .comment-item__reply {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 0.9rem;
+        padding: 2px 8px;
+        color: var(--light-2);
+        transition: 0.2s;
+
+        &:hover {
+          color: var(--light-1);
+          background: var(--dark4);
+          border-radius: 4px;
+        }
+      }
+    }
+  }
+}
+
+.post-item-edit {
+  background-color: var(--dark-1);
+  color: var(--light-1);
+  font-family: var(--font-family);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .input {
+      padding: 0.5rem;
+      border-radius: 6px;
+      border: 1px solid var(--gray-2);
+      background-color: var(--dark2);
+      color: var(--light-1);
+      font-family: var(--font-family);
+      width: 100%;
+
+      &::placeholder {
+        color: var(--gray-1);
+      }
+    }
+
+    .editor {
+      background-color: var(--dark2);
+      color: var(--light-1);
+      min-height: 200px;
+
+      .ql-toolbar {
+        background-color: var(--dark2);
+        border: 1px solid var(--gray-2);
+        border-radius: 10px 10px 0 0;
+      }
+
+      .ql-container {
+        background-color: var(--dark2);
+        border: 1px solid var(--gray-2);
+        border-radius: 0 0 10px 10px;
+        color: var(--light-1);
+        min-height: 200px;
+      }
+
+      .ql-editor::before {
+        color: var(--gray-2);
+        opacity: 0.4;
+      }
+
+      .ql-stroke {
+        stroke: #fff;
+      }
+
+      .ql-fill {
+        fill: #fff;
+      }
+
+      .ql-picker-label,
+      .ql-picker-item {
+        color: #fff;
+      }
+
+      .ql-picker-options {
+        backdrop-filter: blur(10px);
+        background: rgba(28, 28, 28, 0.8);
+      }
+
+      .ql-picker-item::before {
+        transition: color 0.3s ease;
+      }
+
+      .ql-picker-item:hover::before {
+        color: var(--blue-1);
+      }
+    }
+
+    .categories {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+
+      label {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+
+        input[type="checkbox"] {
+          accent-color: var(--blue-1);
+        }
+      }
+    }
+
+    .images-upload {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      input[type="file"] {
+        border-radius: 6px;
+        padding: 0.3rem;
+        background-color: var(--dark2);
+        color: var(--light-1);
+      }
+
+      .preview-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.5rem;
+
+        .preview-img {
+          width: 100%;
+          height: 100px;
+          object-fit: cover;
+          border-radius: 6px;
+          border: 1px solid var(--gray-2);
+          position: relative;
+
+          .remove-btn {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            line-height: 20px;
+            text-align: center;
+          }
+        }
+      }
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 0.5rem;
+
+      button {
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        font-family: var(--second-family);
+        font-size: 1rem;
+
+        &.save {
+          background-color: var(--blue-1);
+          color: var(--light-1);
+        }
+
+        &.cancel {
+          background-color: var(--gray-2);
+          color: var(--light-1);
+        }
+      }
+    }
+  }
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.favorite-btn {
+  margin-bottom: 12px;
+}

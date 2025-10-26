@@ -1,0 +1,57 @@
+.header {
+  padding: 20px 0;
+  position: sticky;
+  top: 0;
+  backdrop-filter: blur(10px);
+  z-index: 10;
+  background: rgba(28, 28, 28, 0.8);
+
+  &__logo {
+    min-width: 120px;
+  }
+
+  &__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+
+    @media (max-width: 518px) {
+      justify-content: center;
+      flex-direction: column;
+    }
+  }
+
+  &__avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+  }
+
+  &__user {
+    &-info {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+    &-details {
+      display: flex;
+      flex-direction: column;
+      align-items: end;
+
+      font-family: var(--font-family);
+      font-weight: 400;
+      font-size: 16px;
+      color: var(--light-1);
+
+      gap: 4px;
+    }
+  }
+
+  &__role {
+    background: var(--blue-1);
+    padding: 2px 4px;
+    border-radius: 4px;
+    font-size: 12px;
+  }
+}

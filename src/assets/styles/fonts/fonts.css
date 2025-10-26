@@ -1,0 +1,15 @@
+@font-face {
+  font-family: "Gang of Three";
+  src: url("../../fonts/Gang of Three.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Seven Monkey Fury BB";
+  src: url("../../fonts/Seven Monkey Fury BB.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}

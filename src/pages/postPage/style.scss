@@ -1,0 +1,41 @@
+.post-page {
+  width: 100%;
+}
+
+.not-found {
+  font-family: var(--font-family);
+  font-weight: 400;
+
+  line-height: 100%;
+  color: var(--light-1);
+
+  background: var(--dark-1);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 106px);
+  width: 100%;
+
+  &-content {
+    background: var(--dark2);
+    padding: 1rem;
+    border-radius: 1rem;
+
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+
+    & h2 {
+      text-align: center;
+      margin-bottom: 1rem;
+      font-weight: 600;
+      color: var(--light-1);
+      font-size: 1.6rem;
+    }
+
+    & .green {
+      margin-bottom: -12px;
+    }
+  }
+}

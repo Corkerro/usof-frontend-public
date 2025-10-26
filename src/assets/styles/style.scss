@@ -1,0 +1,240 @@
+@use "sass:math"; // Підключення бібліотек
+@use "./libs/reset.css" as *;
+@use "./includes/index.scss" as *;
+@use "./fonts/fonts.css" as *;
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// Підключення загальних віддалених шрифтів (Google Fonts)
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+@import url(https://fonts.googleapis.com/css?family=Inter:100,200,300,regular,500,600,700,800,900,100italic,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic&display=swap);
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// Стилі тега BODY
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+body {
+  background: var(--dark-1);
+  min-width: #{$minWidth}px;
+  color: $mainColor;
+  font-family: $fontFamily;
+  font-size: #{$fontSize}px;
+
+  // Скролл заблоковано
+  [data-fls-scrolllock] & {
+    overflow: hidden;
+    touch-action: none;
+    overscroll-behavior: none;
+  }
+  // Сайт завантажений
+  [data-fls-loaded] & {
+  }
+}
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// Оболонка WRAPPER
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.wrapper {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: clip;
+  // Притискаємо footer
+  > main {
+    flex: 1 1 auto;
+  }
+  // Фікс для слайдерів
+  > * {
+    min-width: 0;
+  }
+}
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// Обмежуючий контейнер
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// Стилі будуть застосовуватись до
+// всіх класів, що містять *__container
+// Наприклад header__container, main__container і т.п.
+// Сніппет (HTML): cnt
+
+@if ($responsiveType==1) {
+  // Чуйна
+  [class*="__container"] {
+    @if ($maxWidthContainer>0) {
+      max-width: #{$containerWidth}px;
+      margin: 0 auto;
+    }
+    @if ($containerPadding>0) {
+      @if ($maxWidthContainer>0) {
+        padding-left: #{math.div($containerPadding, 2)}px;
+        padding-right: #{math.div($containerPadding, 2)}px;
+      } @else {
+        @include adaptiveValue("padding-left", math.div($containerPadding, 2), 15);
+        @include adaptiveValue("padding-right", math.div($containerPadding, 2), 15);
+      }
+    }
+  }
+} @else {
+  // Брейк-поїнтами
+  [class*="__container"] {
+    margin: 0 auto;
+    @if ($maxWidthContainer>0) {
+      max-width: #{$containerWidth}px;
+    } @else {
+      @if ($containerPadding>0) {
+        padding-left: #{math.div($containerPadding, 2)}px;
+        padding-right: #{math.div($containerPadding, 2)}px;
+      }
+    }
+    @media (max-width: toEm($pc)) {
+      max-width: 970px;
+    }
+    @media (max-width: toEm($tablet)) {
+      max-width: 750px;
+    }
+    @media (max-width: toEm($mobile)) {
+      max-width: none;
+      @if ($containerPadding>0 and $maxWidthContainer>0) {
+        padding-left: #{math.div($containerPadding, 2)}px;
+        padding-right: #{math.div($containerPadding, 2)}px;
+      }
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// Загальні стилі для усього сайту
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+html {
+  scroll-behavior: smooth;
+}
+
+:root {
+  --dark-1: #1c1c1c;
+  --gray-1: #6e6e6e;
+  --red-1: #b03a2e;
+  --gray-2: #cfcfcf;
+  --light-1: #efe6e1;
+  --light-1-hover: #ffd0b9;
+  --blue-1: #2e86ab;
+  --dark2: #2f2f2f;
+  --red-1-dark: #771a11;
+  --dark-1-80: rgba(28, 28, 28, 0.8);
+}
+
+:root {
+  --font-family: "Inter", sans-serif;
+  --second-family: "Gang of Three", sans-serif;
+  --third-family: "Seven Monkey Fury BB", sans-serif;
+}
+
+.main {
+  margin-top: 20px;
+}
+
+.button {
+  font-family: var(--second-family);
+  font-weight: 400;
+  font-size: 16px;
+  text-align: center;
+  color: var(--light-1);
+  padding: 8px 16px;
+  border-radius: 4px;
+  background: var(--red-1);
+  border: 1px solid var(--red-1);
+
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background: var(--dark-1-80);
+  }
+  &:active {
+    background: var(--dark-1);
+  }
+
+  &.stroke {
+    background: var(--dark-1-80);
+
+    &:hover {
+      background: var(--red-1);
+    }
+    &:active {
+      background: var(--red-1-dark);
+    }
+  }
+}
+
+.main__container {
+  display: flex;
+  gap: 20px;
+  align-items: start;
+}
+
+.editor {
+  background-color: var(--dark2);
+  color: var(--light-1);
+  .ql-toolbar {
+    background-color: var(--dark2);
+    border: 1px solid var(--gray-2);
+  }
+  .ql-container {
+    background-color: var(--dark2);
+    border: 1px solid var(--gray-2);
+    color: var(--light-1);
+    min-height: 200px;
+  }
+
+  .ql-formats {
+    color: #fff;
+  }
+
+  .ql-stroke {
+    stroke: #fff;
+  }
+
+  .ql-fill {
+    fill: #fff;
+  }
+
+  .ql-toolbar .ql-picker-label,
+  .ql-toolbar .ql-picker-item {
+    color: #fff;
+  }
+
+  .ql-picker-options {
+    backdrop-filter: blur(10px);
+    background: rgba(28, 28, 28, 0.8);
+  }
+
+  .ql-picker-item::before {
+    transition: color 0.3s ease;
+  }
+
+  .ql-picker-item:hover::before {
+    color: var(--blue-1);
+  }
+
+  .ql-toolbar {
+    border-radius: 10px 10px 0 0;
+  }
+
+  .ql-container {
+    border-radius: 0 0 10px 10px;
+    color: #fff;
+  }
+
+  .ql-editor::before {
+    color: var(--gray-2);
+    opacity: 0.4;
+  }
+}
+
+.button.green {
+  background: #4caf50;
+  border: 1px solid #4caf50;
+  &:hover {
+    background: transparent;
+  }
+}
