@@ -16,12 +16,12 @@ function Footer() {
 
           <ul>
             <li>
-              <a href="https://github.com/yourusername/bugzillasan" target="_blank" rel="noopener noreferrer">
+              <a href="https://github.com/Corkerro/usof-frontend-public" target="_blank" rel="noopener noreferrer">
                 View on GitHub
               </a>
             </li>
             <li>
-              <a href="https://github.com/yourusername/bugzillasan-backend" target="_blank" rel="noopener noreferrer">
+              <a href="https://github.com/Corkerro/usof-backend-public" target="_blank" rel="noopener noreferrer">
                 Backend Repository
               </a>
             </li>
