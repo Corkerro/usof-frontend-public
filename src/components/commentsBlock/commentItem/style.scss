@@ -56,6 +56,21 @@
     background: var(--dark4);
   }
 
+  &__edit {
+    & textarea {
+      background: var(--dark-1);
+      padding: 12px;
+      border-radius: 4px;
+      border: 1px solid var(--light-1);
+      margin-bottom: 8px;
+    }
+
+    & button:first-child {
+      margin-right: 8px;
+    }
+    margin-bottom: 12px;
+  }
+
   &__replies {
     margin-top: 1rem;
     border-left: 2px solid var(--light-2);

@@ -5,6 +5,7 @@ import like from "/like.svg";
 import dislike from "/dislike.svg";
 import trash from "/trash.svg";
 import reply from "/reply.svg";
+import edit from "/edit.svg";
 import "./style.scss";
 import ConfirmModal from "../../сonfirmModal";
 
@@ -16,13 +17,19 @@ export default function CommentItem({ comment, currentUserId, onUpdated, onReply
   const [showConfirm, setShowConfirm] = useState(false);
   const [currentUserRole, setCurrentUserRole] = useState(null);
 
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedContent, setEditedContent] = useState(comment.content);
+
   useEffect(() => {
     setLikeCount(Number(comment.likeCount));
   }, [comment.likeCount]);
 
   useEffect(() => {
-    if (!currentUserId) return;
+    setEditedContent(comment.content);
+  }, [comment.content]);
 
+  useEffect(() => {
+    if (!currentUserId) return;
     const fetchUserData = async () => {
       try {
         const res = await fetch(`http://localhost:3000/api/users/${currentUserId}`, {
@@ -36,7 +43,6 @@ export default function CommentItem({ comment, currentUserId, onUpdated, onReply
         console.error("Error loading current user:", err);
       }
     };
-
     const fetchUserLike = async () => {
       try {
         const res = await fetch(`http://localhost:3000/api/comments/${comment.id}/like`, {
@@ -51,7 +57,6 @@ export default function CommentItem({ comment, currentUserId, onUpdated, onReply
         console.error("Error fetching likes:", err);
       }
     };
-
     fetchUserData();
     fetchUserLike();
   }, [comment.id, currentUserId]);
@@ -75,7 +80,6 @@ export default function CommentItem({ comment, currentUserId, onUpdated, onReply
   dateObj.setTime(dateObj.getTime() + 2 * 60 * 60 * 1000);
   const relativeTime = getRelativeTime(dateObj);
   const fullTime = dateObj.toLocaleString("en-GB");
-
   const isOwn = comment.authorId === currentUserId;
   const isAdmin = currentUserRole === 1; // ✅ роль 1 = админ
   const displayName = isOwn ? "You" : authorLogin || "Unknown";
@@ -84,11 +88,10 @@ export default function CommentItem({ comment, currentUserId, onUpdated, onReply
   const isReply = comment.parentId !== null;
 
   const handleVote = async (value) => {
-    if (loading || !currentUserId) return;
+    if (loading || !currentUserId || isEditing) return;
     setLoading(true);
     try {
       const alreadyLiked = (value === 1 && hasLiked) || (value === -1 && hasDisliked);
-
       if (alreadyLiked) {
         await fetch(`http://localhost:3000/api/comments/${comment.id}/like`, {
           method: "DELETE",
@@ -106,7 +109,6 @@ export default function CommentItem({ comment, currentUserId, onUpdated, onReply
         setUserLike(value === 1 ? "like" : "dislike");
         setLikeCount((prev) => prev + (value === 1 ? (hasDisliked ? 2 : 1) : hasLiked ? -2 : -1));
       }
-
       onUpdated?.();
     } catch (err) {
       console.error("Error while liking comment:", err);
@@ -134,6 +136,42 @@ export default function CommentItem({ comment, currentUserId, onUpdated, onReply
     onReply?.(comment.id, displayName);
   };
 
+  const handleEditClick = () => {
+    setIsEditing(true);
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setEditedContent(comment.content);
+  };
+
+  const handleSaveEdit = async () => {
+    if (loading || !editedContent.trim()) {
+      handleCancelEdit();
+      return;
+    }
+    setLoading(true);
+    try {
+      const res = await fetch(`http://localhost:3000/api/comments/${comment.id}`, {
+        method: "PATCH",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ content: editedContent }),
+      });
+      if (res.ok) {
+        onUpdated?.();
+        setIsEditing(false);
+      } else {
+        throw new Error("Failed to save edit");
+      }
+    } catch (err) {
+      console.error("Error updating comment:", err);
+      handleCancelEdit();
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <div className={`comment-item ${hasLiked ? "liked" : hasDisliked ? "disliked" : ""} ${likeCount > 0 ? "good" : likeCount < 0 ? "bad" : ""} level-${level}`}>
@@ -146,18 +184,33 @@ export default function CommentItem({ comment, currentUserId, onUpdated, onReply
           </span>
         </div>
 
-        <div className="comment-item__content">{comment.content}</div>
+        {isEditing ? (
+          <div className="comment-item__edit">
+            <textarea value={editedContent} onChange={(e) => setEditedContent(e.target.value)} disabled={loading} rows={3} />
+            <div className="comment-item__edit-actions">
+              <button onClick={handleCancelEdit} disabled={loading} className="comment-item__edit-cancel button">
+                Cancel
+              </button>
+              <button onClick={handleSaveEdit} disabled={loading} className="comment-item__edit-save button green">
+                Save
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="comment-item__content">{comment.content}</div>
+        )}
 
         <div className="comment-item__footer">
           {currentUserId && (
             <>
-              <button disabled={loading} onClick={() => handleVote(1)} className={hasLiked ? "active" : ""}>
+              <button disabled={loading || isEditing} onClick={() => handleVote(1)} className={hasLiked ? "active" : ""}>
                 <img src={like} alt="like" />
               </button>
-              <button disabled={loading} onClick={() => handleVote(-1)} className={hasDisliked ? "disliked" : ""}>
+              <button disabled={loading || isEditing} onClick={() => handleVote(-1)} className={hasDisliked ? "disliked" : ""}>
                 <img src={dislike} alt="dislike" />
               </button>
-              {!isReply && (
+
+              {!isReply && !isEditing && (
                 <button onClick={handleReplyClick} className="comment-item__reply">
                   <img src={reply} alt="reply" /> Reply
                 </button>
@@ -166,10 +219,18 @@ export default function CommentItem({ comment, currentUserId, onUpdated, onReply
           )}
           <span className="comment-item__rating">{likeCount} rating</span>
 
-          {(isOwn || isAdmin) && (
-            <button disabled={loading} onClick={() => setShowConfirm(true)} className="comment-item__delete" title={isAdmin ? "Delete as admin" : "Delete comment"}>
-              <img src={trash} alt="trash" />
-            </button>
+          {!isEditing && (isOwn || isAdmin) && (
+            <div className="comment-item__owner-actions">
+              {isOwn && (
+                <button disabled={loading} onClick={handleEditClick} className="comment-item__edit-btn" title="Edit comment">
+                  <img src={edit} alt="edit" />
+                </button>
+              )}
+
+              <button disabled={loading} onClick={() => setShowConfirm(true)} className="comment-item__delete" title={isAdmin ? "Delete as admin" : "Delete comment"}>
+                <img src={trash} alt="trash" />
+              </button>
+            </div>
           )}
         </div>
 
@@ -181,7 +242,6 @@ export default function CommentItem({ comment, currentUserId, onUpdated, onReply
           </div>
         )}
       </div>
-
       <ConfirmModal isOpen={showConfirm} title="Delete comment" message="Are you sure you want to delete this comment?" onConfirm={handleDelete} onCancel={() => setShowConfirm(false)} />
     </>
   );
